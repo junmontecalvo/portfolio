@@ -1,0 +1,17 @@
+---
+import Layout from '../layouts/Layout.astro';
+import aboutBG from '../assets/images/reflection-from-laptop-glasses-dark-background.jpg';
+---
+
+<Layout title="About">
+	<section class="banner inner" style={`background-image: url("${aboutBG.src}");`}>
+    	<canvas id="hex-grid-canvas" width="1520" height="914"></canvas>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<h1 class="text-center">ABOUT</h1>
+				</div>
+			</div>
+    	</div>
+	</section>
+</Layout>

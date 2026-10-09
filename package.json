@@ -12,6 +12,14 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^7.3.8"
+    "@astrojs/vercel": "^11.0.13",
+    "@keystatic/astro": "^6.0.0",
+    "@keystatic/core": "^0.6.9",
+    "@popperjs/core": "^2.11.8",
+    "astro": "^7.3.8",
+    "bootstrap": "^5.3.8",
+    "jquery": "^4.0.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
   }
 }

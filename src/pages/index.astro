@@ -1,11 +1,30 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import mE from '../assets/images/me.png';
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Home">
+	<section class="banner">
+    	<canvas id="hex-grid-canvas" width="1520" height="914"></canvas>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6">
+					<h3>Hi!</h3>
+					<h2><span class="red">I’m</span> Lemuel Montecalvo jr.</h2>
+					<p><span class="text-has-bg">Web Developer</span></p>
+					<h1>WEB DEVELOPMENT &amp; <span class="red">WEBSITE SOLUTIONS</span></h1>
+					<p>Web Developer with 5+ years of experience building high-performance websites, blogs, commercial websites, and eCommerce solutions. I specialize in developing and customizing websites using WordPress, GoHighLevel (GHL), Wix, Squarespace and ASTRO. My WordPress expertise includes custom development with PHP, ACF, JavaScript, HTML, CSS, databases, and WooCommerce, allowing me to build flexible, scalable, and user-focused websites tailored to each project’s needs.</p>
+					
+					<div class="btnwrapper">
+						<a href="#" class="cta-btn has-bg">View my work</a>
+						<a href="#" class="cta-btn no-bg">Download Resume/CV</a>
+					</div>
+				</div>
+
+				<div class="col-md-6 imgwrpper">
+					<img src={mE.src} alt="Background" />
+				</div>
+			</div>
+    	</div>
+	</section>
 </Layout>
