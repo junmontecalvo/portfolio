@@ -187,43 +187,23 @@ ul.nav-menu {
     color: #fff;
     margin: 0;
 }
+
 .skills-controls{
     display: flex;
     gap: 10px;
 }
-.skills-control{
-    display: grid;
-    width: 42px;
-    height: 42px;
-    place-items: center;
-    border: 1px solid #f50850;
-    border-radius: 50%;
-    background: transparent;
-    color: #fff;
-    font-size: 22px;
-    line-height: 1;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-.skills-control:hover,
-.skills-control:focus-visible{
-    background-color: #f50850;
-}
 .skills-track{
-    display: flex;
-    gap: 16px;
-    overflow-x: auto;
-    padding: 4px 2px 12px;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    overscroll-behavior-x: contain;
+    padding: 4px 0 12px;
 }
-.skills-track::-webkit-scrollbar{
-    display: none;
+.skills-track .slick-list{
+    margin: 0 -8px;
+}
+.skills-track .slick-slide{
+    box-sizing: border-box;
+    padding: 4px 8px;
 }
 .skills-track .item{
-    display: flex;
-    flex: 0 0 calc((100% - 48px) / 4);
+    display: flex !important;
     min-width: 0;
     min-height: 120px;
     flex-direction: row;
@@ -234,7 +214,28 @@ ul.nav-menu {
     border-top: 1px solid rgba(245, 8, 80, 0.90);
     border-radius: 12px;
     background: rgba(255, 255, 255, 0.20);
-    scroll-snap-align: start;
+}
+.skills-control{
+    display: grid;
+    width: 42px;
+    height: 42px;
+    place-items: center;
+    border: 1px solid #f50850;
+    border-radius: 50%;
+    background: transparent;
+    color: #fff;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.skills-control:hover,
+.skills-control:focus-visible{
+    background-color: #f50850;
+}
+.skills-control.slick-disabled{
+    opacity: 0.5;
+    cursor: default;
 }
 .skill-icon{
     display: grid;
@@ -266,25 +267,14 @@ ul.nav-menu {
     text-align: center;
     text-transform: uppercase;
 }
-@media (max-width: 991px){
-    .skills-track .item{
-        flex-basis: calc((100% - 32px) / 3);
-    }
-}
 @media (max-width: 575px){
     .skills{
         padding-top: 36px;
         padding-bottom: 36px;
     }
-    .skills-track .item{
-        flex-basis: calc((100% - 16px) / 2);
-    }
 }
 @media (prefers-reduced-motion: reduce){
     .skills-control{
         transition: none;
-    }
-    .skills-track{
-        scroll-behavior: auto;
     }
 }

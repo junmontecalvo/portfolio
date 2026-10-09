@@ -21,6 +21,7 @@
     "bootstrap": "^5.3.8",
     "jquery": "^4.0.0",
     "react": "^19.3.0",
-    "react-dom": "^19.3.0"
+    "react-dom": "^19.3.0",
+    "slick-carousel": "^2.0.0"
   }
 }
