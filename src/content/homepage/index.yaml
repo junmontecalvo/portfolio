@@ -1,0 +1,17 @@
+greeting: Hi!
+name: <span class="red">I’m</span> Lemuel Montecalvo jr.
+jobTitle: Web Developer
+headline: WEB DEVELOPMENT & <span class="red">WEBSITE SOLUTIONS</span>
+bio: >-
+  Web Developer with 5+ years of experience building high-performance websites,
+  blogs, commercial websites, and eCommerce solutions. I specialize in
+  developing and customizing websites using WordPress, GoHighLevel (GHL), Wix,
+  Squarespace and ASTRO. My WordPress expertise includes custom development with
+  PHP, ACF, JavaScript, HTML, CSS, databases, and WooCommerce, allowing me to
+  build flexible, scalable, and user-focused websites tailored to each project’s
+  needs.
+workButtonText: View my work
+workButtonUrl: '#'
+resumeButtonText: Download Resume/CV
+resumeButtonUrl: '#'
+heroImage: ../assets/images/heroImage.png

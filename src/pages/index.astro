@@ -1,30 +1,136 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import mE from '../assets/images/me.png';
+import { createReader } from '@keystatic/core/reader';
+import keystaticConfig from '../../keystatic.config';
+
+const reader = createReader(process.cwd(), keystaticConfig);
+const homepageData = await reader.singletons.homepage.read();
+
+const greeting = homepageData?.greeting;
+const name = homepageData?.name;
+const jobTitle = homepageData?.jobTitle;
+const headline = homepageData?.headline;
+const bio = homepageData?.bio;
+const workButtonText = homepageData?.workButtonText;
+const workButtonUrl = homepageData?.workButtonUrl;
+const resumeButtonText = homepageData?.resumeButtonText;
+const resumeButtonUrl = homepageData?.resumeButtonUrl;
+const heroImages = import.meta.glob<string>('../assets/images/*', {
+	eager: true,
+	import: 'default',
+	query: '?url',
+});
+const heroImageFilename = homepageData?.heroImage?.split('/').pop();
+const heroImage = heroImageFilename
+	? Object.entries(heroImages).find(([path]) => path.endsWith(`/${heroImageFilename}`))?.[1]
+	: undefined;
 ---
 
 <Layout title="Home">
+
 	<section class="banner">
-    	<canvas id="hex-grid-canvas" width="1520" height="914"></canvas>
+		<canvas id="hex-grid-canvas" width="1520" height="914"></canvas>
 		<div class="container">
 			<div class="row">
 				<div class="col-md-6">
-					<h3>Hi!</h3>
-					<h2><span class="red">I’m</span> Lemuel Montecalvo jr.</h2>
-					<p><span class="text-has-bg">Web Developer</span></p>
-					<h1>WEB DEVELOPMENT &amp; <span class="red">WEBSITE SOLUTIONS</span></h1>
-					<p>Web Developer with 5+ years of experience building high-performance websites, blogs, commercial websites, and eCommerce solutions. I specialize in developing and customizing websites using WordPress, GoHighLevel (GHL), Wix, Squarespace and ASTRO. My WordPress expertise includes custom development with PHP, ACF, JavaScript, HTML, CSS, databases, and WooCommerce, allowing me to build flexible, scalable, and user-focused websites tailored to each project’s needs.</p>
+					<h3>{greeting}</h3>
+					<h2 set:html={name} />
+					<p><span class="text-has-bg">{jobTitle}</span></p>
+					<h1 set:html={headline} />
+					<p>{bio}</p>
 					
 					<div class="btnwrapper">
-						<a href="#" class="cta-btn has-bg">View my work</a>
-						<a href="#" class="cta-btn no-bg">Download Resume/CV</a>
+						<a href={workButtonUrl} class="cta-btn has-bg">{workButtonText}</a>
+						<a href={resumeButtonUrl} class="cta-btn no-bg">{resumeButtonText}</a>
 					</div>
 				</div>
 
 				<div class="col-md-6 imgwrpper">
-					<img src={mE.src} alt="Background" />
+					<img src={heroImage} alt="Lemuel Montecalvo jr." />
 				</div>
 			</div>
-    	</div>
+		</div>
 	</section>
+
+	<section class="skills">
+		<div class="container skills-container">
+			<div class="skills-heading">
+				<h2><span class="red">My</span> Skills</h2>
+				<div class="skills-controls">
+					<button class="skills-control" type="button" data-skills-prev aria-label="Previous skills">
+						<span aria-hidden="true"><i class="fa-solid fa-angle-left"></i></span>
+					</button>
+					<button class="skills-control" type="button" data-skills-next aria-label="Next skills">
+						<span aria-hidden="true"><i class="fa-solid fa-angle-right"></i></span>
+					</button>
+				</div>
+			</div>
+			
+
+				<div class="skills-track" data-skills-track role="region" aria-label="Skills" tabindex="0">
+					<div class="item">
+						<span class="skill-icon skill-icon-html" aria-hidden="true"><i class="fa-solid fa-code"></i></span>
+						<h3>HTML</h3>
+					</div>
+					<div class="item">
+						<span class="skill-icon skill-icon-css" aria-hidden="true"><i class="fa-brands fa-css"></i></span>
+						<h3>CSS</h3>
+					</div>
+					<div class="item">
+						<span class="skill-icon skill-icon-js" aria-hidden="true"><i class="fa-brands fa-js"></i></span>
+						<h3>JavaScript</h3>
+					</div>
+					<div class="item">
+						<span class="skill-icon skill-icon-php" aria-hidden="true"><i class="fa-brands fa-php"></i></span>
+						<h3>PHP</h3>
+					</div>
+					<div class="item">
+						<span class="skill-icon skill-icon-database" aria-hidden="true"><i class="fa-solid fa-database"></i></span>
+						<h3>MySQL DATABASE</h3>
+					</div>
+					<div class="item">
+						<span class="skill-icon skill-icon-bootstrap" aria-hidden="true"><i class="fa-brands fa-bootstrap"></i></span>
+						<h3>Bootstrap</h3>
+					</div>
+					<div class="item">
+						<span class="skill-icon skill-icon-astro" aria-hidden="true">A</span>
+						<h3>Astro</h3>
+					</div>
+					<div class="item">
+						<span class="skill-icon skill-icon-wordpress" aria-hidden="true"><i class="fa-brands fa-wordpress"></i></span>
+						<h3>WordPress</h3>
+					</div>
+					<div class="item">
+						<span class="skill-icon skill-icon-squarespace" aria-hidden="true"><i class="fa-brands fa-squarespace"></i></span>
+						<h3>Squarespace</h3>
+					</div>
+					<div class="item">
+						<span class="skill-icon skill-icon-wix" aria-hidden="true"><i class="fa-brands fa-wix"></i></span>
+						<h3>Wix</h3>
+					</div>
+				</div>
+		</div>
+	</section>
+
 </Layout>
+
+<script>
+	const skillsTrack = document.querySelector<HTMLElement>('[data-skills-track]');
+
+	if (skillsTrack) {
+		const scrollSkills = (direction: -1 | 1) => {
+			const firstSkill = skillsTrack.querySelector<HTMLElement>('.item');
+			if (!firstSkill) return;
+
+			const trackStyles = getComputedStyle(skillsTrack);
+			const gap = Number.parseFloat(trackStyles.columnGap) || 0;
+			skillsTrack.scrollBy({
+				left: direction * (firstSkill.offsetWidth + gap),
+				behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+			});
+		};
+
+		document.querySelector('[data-skills-prev]')?.addEventListener('click', () => scrollSkills(-1));
+		document.querySelector('[data-skills-next]')?.addEventListener('click', () => scrollSkills(1));
+	}
+</script>
