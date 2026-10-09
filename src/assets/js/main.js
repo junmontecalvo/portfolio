@@ -2,16 +2,13 @@ const skillsTrack = document.querySelector('[data-skills-track]');
 
 if (skillsTrack) {
   const initializeSkills = async () => {
-    const { default: $ } = await import('jquery');
-
-    window.jQuery = $;
-    window.$ = $;
-    await Promise.all([
+    const [{ default: $ }, { default: slick }] = await Promise.all([
+      import('jquery'),
       import('slick-carousel'),
       import('slick-carousel/slick/slick.css'),
     ]);
 
-    // 4. Initialize slick carousel
+    slick(window, $);
     $(skillsTrack).slick({
       dots: false,
       infinite: true,
@@ -51,71 +48,52 @@ if (canvas && banner && ctx) {
     ctx.beginPath();
     for (let i = 0; i < 6; i++) {
       const angle = (Math.PI / 3) * i - Math.PI / 6;
-      const pointX = x + size * Math.cos(angle);
-      const pointY = y + size * Math.sin(angle);
-      if (i === 0) ctx.moveTo(pointX, pointY);
-      else ctx.lineTo(pointX, pointY);
+      const hx = x + radius * Math.cos(angle);
+      const hy = y + radius * Math.sin(angle);
+      if (i === 0) ctx.moveTo(hx, hy);
+      else ctx.lineTo(hx, hy);
     }
     ctx.closePath();
   }
 
   function render() {
-    frameRequested = false;
     ctx.clearRect(0, 0, width, height);
 
     let row = 0;
-    for (let y = 0; y < height + radius; y += rowHeight) {
-      const xOffset = row % 2 === 1 ? hexWidth / 2 : 0;
-      for (let x = xOffset; x < width + hexWidth; x += hexWidth) {
-        const dx = mouseX - x;
-        const dy = mouseY - y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        drawHexagon(x, y, radius - 1.5);
+    for (let y = 0; y < height + r; y += rowHeight) {
+      const xOffset = (row % 2 === 1) ? hexWidth / 2 : 0;
 
-        if (distance < 160) {
-          const intensity = 1 - distance / 160;
+      for (let x = xOffset; x < width + hexWidth; x += hexWidth) {
+        const dx = mouse.x - x;
+        const dy = mouse.y - y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        drawHexagon(x, y, r - 1.5); // 1.5px gap between cells
+
+        if (dist < mouse.radius) {
+          const intensity = 1 - (dist / mouse.radius);
+          
+          // Neon stroke glow
           ctx.strokeStyle = `rgba(245, 8, 80, ${0.15 + intensity * 0.75})`;
           ctx.lineWidth = 1 + intensity * 1.5;
+          
+          // Subtle neon fill highlight
           ctx.fillStyle = `rgba(245, 8, 80, ${intensity * 0.18})`;
           ctx.fill();
         } else {
+          // Dim static base state
           ctx.strokeStyle = 'rgba(255, 255, 255, 0.035)';
           ctx.lineWidth = 0.6;
         }
+
         ctx.stroke();
       }
       row++;
     }
-  }
 
-  function scheduleRender() {
-    if (frameRequested) return;
-    frameRequested = true;
     requestAnimationFrame(render);
   }
 
-  function resizeCanvas() {
-    const bounds = banner.getBoundingClientRect();
-    const nextWidth = Math.round(bounds.width);
-    const nextHeight = Math.round(bounds.height);
-    if (nextWidth === width && nextHeight === height) return;
-
-    width = canvas.width = nextWidth;
-    height = canvas.height = nextHeight;
-    scheduleRender();
-  }
-
-  banner.addEventListener('pointermove', (event) => {
-    const bounds = banner.getBoundingClientRect();
-    mouseX = event.clientX - bounds.left;
-    mouseY = event.clientY - bounds.top;
-    scheduleRender();
-  });
-  banner.addEventListener('pointerleave', () => {
-    mouseX = -1000;
-    mouseY = -1000;
-    scheduleRender();
-  });
-  window.addEventListener('resize', resizeCanvas);
+  $(window).on('resize', resizeCanvas);
   resizeCanvas();
 }
