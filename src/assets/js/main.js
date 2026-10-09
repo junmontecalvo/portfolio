@@ -2,13 +2,16 @@ const skillsTrack = document.querySelector('[data-skills-track]');
 
 if (skillsTrack) {
   const initializeSkills = async () => {
-    const [{ default: $ }, { default: slick }] = await Promise.all([
-      import('jquery'),
+    const { default: $ } = await import('jquery');
+
+    window.jQuery = $;
+    window.$ = $;
+    await Promise.all([
       import('slick-carousel'),
       import('slick-carousel/slick/slick.css'),
     ]);
 
-    slick(window, $);
+    // 4. Initialize slick carousel
     $(skillsTrack).slick({
       dots: false,
       infinite: true,
