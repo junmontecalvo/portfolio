@@ -1,4 +1,3 @@
-// keystatic.config.ts
 import { config, fields, collection, singleton } from '@keystatic/core';
 
 export default config({
@@ -28,6 +27,33 @@ export default config({
           directory: 'src/assets/images/',
           publicPath: '../assets/images/',
         }),
+
+        // --- Skills Section ---
+        skillsSectionTitle: fields.text({
+          label: 'Skills Section Title',
+          defaultValue: 'My Skills',
+        }),
+        skills: fields.array(
+          fields.object({
+            title: fields.text({ label: 'Skill Title' }),
+            iconClass: fields.text({
+              label: 'FontAwesome Icon Class',
+              description: 'e.g. "fa-brands fa-js" or "fa-solid fa-code"',
+            }),
+            iconSlug: fields.text({
+              label: 'CSS Modifier Class Slug',
+              description: 'e.g. "html", "css", "js" (generates "skill-icon-js")',
+            }),
+            iconText: fields.text({
+              label: 'Fallback Text (Optional)',
+              description: 'For items without FontAwesome icons (e.g., "A" for Astro)',
+            }),
+          }),
+          {
+            label: 'Skills List',
+            itemLabel: (props) => props.fields.title.value || 'Skill Item',
+          }
+        ),
       },
     }),
   },

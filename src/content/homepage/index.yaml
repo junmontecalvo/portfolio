@@ -1,5 +1,5 @@
 greeting: Hi!
-name: <span class="red">I’m</span> Lemuel Montecalvo jr.
+name: <span class="red">I'm</span> Lemuel Montecalvo jr.
 jobTitle: Web Developer
 headline: WEB DEVELOPMENT & <span class="red">WEBSITE SOLUTIONS</span>
 bio: >-
@@ -15,3 +15,24 @@ workButtonUrl: '#'
 resumeButtonText: Download Resume/CV
 resumeButtonUrl: '#'
 heroImage: ../assets/images/heroImage.png
+skills:
+  - title: HTML
+    iconClass: fa-solid fa-code
+  - title: CSS
+    iconClass: fa-brands fa-css
+  - title: JavaScript
+    iconClass: fa-brands fa-js
+  - title: PHP
+    iconClass: fa-brands fa-php
+  - title: MySQL DATABASE
+    iconClass: fa-solid fa-database
+  - title: Bootstrap
+    iconClass: fa-brands fa-bootstrap
+  - title: Astro
+    iconClass: fa-solid fa-a
+  - title: WordPress
+    iconClass: fa-brands fa-wordpress
+  - title: Squarespace
+    iconClass: fa-brands fa-squarespace
+  - title: Wix
+    iconClass: fa-brands fa-wix
