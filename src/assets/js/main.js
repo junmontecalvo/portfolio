@@ -1,50 +1,87 @@
-const skillsTrack = document.querySelector('[data-skills-track]');
+import $ from 'jquery';
+import slickCarousel from 'slick-carousel';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
-if (skillsTrack) {
-  const initializeSkills = async () => {
-    const [{ default: $ }, { default: slick }] = await Promise.all([
-      import('jquery'),
-      import('slick-carousel'),
-      import('slick-carousel/slick/slick.css'),
-    ]);
+slickCarousel(window, $);
 
-    slick(window, $);
-    $(skillsTrack).slick({
-      dots: false,
-      infinite: true,
-      autoplay: true,
-      autoplaySpeed: 3000,
-      speed: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 500,
-      slidesToShow: 5,
-      slidesToScroll: 1,
-      prevArrow: $('[data-skills-prev]'),
-      nextArrow: $('[data-skills-next]'),
-      responsive: [
-        { breakpoint: 1024, settings: { slidesToShow: 3, slidesToScroll: 1 } },
-        { breakpoint: 768, settings: { slidesToShow: 2, slidesToScroll: 1 } },
-        { breakpoint: 480, settings: { slidesToShow: 1, slidesToScroll: 1 } },
-      ],
-    });
-  };
+// 1. Initialize Slick Carousel on DOM Ready
+$(document).ready(function () {
+    const $skillsTrack =$('[data-skills-track]');
 
-  void initializeSkills();
-}
+    if ($skillsTrack.length) {$skillsTrack.slick({
+            dots: false,
+            infinite: true,
+            autoplay: true,
+            autoplaySpeed: 3000,
+            speed: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 500,
+            slidesToShow: 5,
+            slidesToScroll: 1,
+            prevArrow: $('[data-skills-prev]'),
+            nextArrow: $('[data-skills-next]'),
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 3,
+                        slidesToScroll: 1
+                    }
+                },
+                {
+                    breakpoint: 768,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 1
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1
+                    }
+                }
+            ]
+        });
+    }
+});
 
-const canvas = document.querySelector('#hex-grid-canvas');
-const banner = canvas?.closest('.banner');
-const ctx = canvas?.getContext('2d');
+// 2. Initialize Hex Grid Canvas Animation
+$(function () {
+  const $canvas =$('#hex-grid-canvas');
+  if (!$canvas.length) return;
 
-if (canvas && banner && ctx) {
-  let width = 0;
-  let height = 0;
-  let mouseX = -1000;
-  let mouseY = -1000;
-  let frameRequested = false;
-  const radius = 26;
-  const hexWidth = Math.sqrt(3) * radius;
-  const rowHeight = 1.5 * radius;
+  const canvas = $canvas[0];
+  const ctx = canvas.getContext('2d');
+  const $banner =$('.banner');
 
-  function drawHexagon(x, y, size) {
+  let width, height;
+  const mouse = { x: -1000, y: -1000, radius: 160 };
+
+  // Hexagon sizing math
+  const r = 26; // Radius (size of each hexagon)
+  const hexWidth = Math.sqrt(3) * r;
+  const rowHeight = 1.5 * r;
+
+  function resizeCanvas() {
+    width = canvas.width = $banner.outerWidth();
+    height = canvas.height = $banner.outerHeight();
+  }
+
+  // Track cursor position relative to banner container
+  $banner.on('mousemove', function (e) {
+    const offset = $banner.offset();
+    mouse.x = e.pageX - offset.left;
+    mouse.y = e.pageY - offset.top;
+  });
+
+  $banner.on('mouseleave', function () {
+    mouse.x = -1000;
+    mouse.y = -1000;
+  });
+
+  // Function to draw a 6-sided polygon
+  function drawHexagon(x, y, radius) {
     ctx.beginPath();
     for (let i = 0; i < 6; i++) {
       const angle = (Math.PI / 3) * i - Math.PI / 6;
@@ -96,4 +133,5 @@ if (canvas && banner && ctx) {
 
   $(window).on('resize', resizeCanvas);
   resizeCanvas();
-}
+  render(); // Properly called inside the scope
+});
